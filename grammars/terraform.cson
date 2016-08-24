@@ -151,7 +151,7 @@
 					'1':
 						'name': 'entity.name.section'
 					'2':
-						'name': 'variable.parameter'
+						'name': 'support.variable.parameter.function'
 					'3':
 						'name': 'punctuation.section.begin'
 				'end': '(\\})'
@@ -172,7 +172,7 @@
 					'1':
 						'name': 'support.variable'
 					'2':
-						'name': 'punctuation.assignment'
+						'name': 'keyword.operator.assignment'
 			}
 		]
 	'keywords':
