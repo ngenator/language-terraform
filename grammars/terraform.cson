@@ -178,7 +178,7 @@
 	'keywords':
 		'patterns': [
 			{
-				'match': '\\b(resource|provider|variable|output|module)\\b'
+				'match': '\\b(resource|provider|provisioner|connection|variable|output|module)\\b'
 				'name': 'support.type'
 			}
 		]
