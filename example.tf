@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "prod" {
 
 	bucket = "${concat(var.bucket_name, 4 - 3)}"
 	acl = "private"
-	policy = <<POLICY_YML
+	policy = <<POLICY_JSON
 {
     "Version": "2008-10-17",
     "Statement": [
@@ -31,7 +31,7 @@ resource "aws_s3_bucket" "prod" {
         }
     ]
 }
-POLICY_YML
+POLICY_JSON
 }
 
 resource "aws_s3_bucket_object" "prod" {
