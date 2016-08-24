@@ -100,7 +100,7 @@
 				]
 			}
 			{
-				'begin': '<<(\\w*SH)$'
+				'begin': '<<(\\w*SH|SHELL)$'
 				'beginCaptures':
 					'1':
 						'name': 'keyword.control.heredoc-token'
