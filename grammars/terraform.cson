@@ -11,7 +11,6 @@
 	{'include': '#comments'}
 	{'include': '#sections'}
 	{'include': '#literals'}
-	{'include': '#keywords'}
 	{'include': '#properties'}
 ]
 
@@ -44,6 +43,8 @@
 			}
 			{'include': '#heredocs'}
 			{'include': '#strings'}
+			{'include': '#maps'}
+			{'include': '#lists'}
 		]
 	'strings':
 		'patterns': [
@@ -136,11 +137,12 @@
 		'patterns': [
 			{'include': '#primitives'}
 			{'include': '#lists'}
+			{'include': '#maps'}
 		]
 	'lists':
 		'patterns': [
 			{
-				'name': 'meta.structure.array'
+				'name': 'storage.type.primitive.array'
 				'begin': '(\\[)'
 				'beginCaptures':
 					'1':
@@ -153,15 +155,37 @@
 					{'include': '#primitives'}
 					{
 						'match': ','
-						'name': 'punctuation.separator.array'
+						'name': 'punctuation.definition.separator'
 					}
+				]
+			}
+		]
+	'maps':
+		'patterns': [
+			{
+				'begin': '(\\w+)\\s*(=)\\s*(\\{)'
+				'beginCaptures':
+					'1':
+						'name': 'variable'
+					'2':
+						'name': 'keyword.operator.assignment'
+					'3':
+						'name': 'punctuation.definition.tag.begin'
+				'end': '(\\})'
+				'endCaptures':
+					'1':
+						'name': 'punctuation.definition.tag.end'
+				'name': 'storage.type.primitive.map'
+				'patterns': [
+					{'include': '#comments'}
+					{'include': '#properties'}
 				]
 			}
 		]
 	'sections':
 		'patterns': [
 			{
-				'begin': '(\\w+)\\s*(?:("[\\w-]+"\\s*)*)?(\\{)'
+				'begin': '^\\b(provider|provisioner|resource|data|module|variable|output)\\b\\s*(?:("[\\w-]+"\\s*)*)?(\\{)'
 				'beginCaptures':
 					'1':
 						'name': 'entity.name.section'
@@ -185,23 +209,20 @@
 				'match': '\\b(count|depends_on|lifecycle|create_before_destroy|prevent_destroy|ignore_changes)\\b\\s*(=)\\s*'
 				'captures':
 					'1':
-						'name': 'support.variable'
+						'name': 'variable'
 					'2':
 						'name': 'keyword.operator.assignment'
 			}
 			{
-				'match': '([\\w-]+)\\s*(=)\\s*'
+				'match': '([\\w-]+)\\s*(=)\\s*(.+?)$'
 				'captures':
 					'1':
-						'name': 'support.variable'
+						'name': 'variable'
 					'2':
 						'name': 'keyword.operator.assignment'
-			}
-		]
-	'keywords':
-		'patterns': [
-			{
-				'match': '\\b(resource|provider|provisioner|connection|variable|output|module)\\b'
-				'name': 'support.type'
+					'3':
+						'patterns': [
+							{'include': '#literals'}
+						]
 			}
 		]
