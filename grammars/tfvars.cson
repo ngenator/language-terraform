@@ -1,14 +1,13 @@
-'scopeName': 'source.terraform'
-'name': 'Terraform'
+'scopeName': 'source.terraform.tfvars'
+'name': 'Terraform tfvars'
 'fileTypes': [
-	'tf'
+	'tfvars'
 ]
 'foldingStartMarker': '\\{\\s*$'
 'foldingStopMarker': '^\\s*\\}'
 
 'patterns': [
 	{'include': '#comments'}
-	{'include': '#sections'}
 	{'include': '#literals'}
 	{'include': '#properties'}
 ]
@@ -33,30 +32,24 @@
 	'primitives':
 		'patterns': [
 			{
-				'match': '\\b(true|false|yes|no|on|off)\\b'
+				'match': '\\b(?:true|false)\\b'
 				'name': 'constant.language'
 			}
 			{
-				'match': '\\b\\d+([kKmMgG]b?)?\\b'
+				'match': '\\b(?:\\d+[kKmMgG]?b?)\\b'
 				'name': 'constant.numeric'
 			}
 			{'include': '#heredocs'}
 			{'include': '#strings'}
-			{'include': '#maps'}
 			{'include': '#lists'}
+			{'include': '#maps'}
 		]
 	'strings':
 		'patterns': [
 			{
 				'comment': 'Terraform claims it only uses double-quoted strings'
-				'begin': '(")'
-				'beginCaptures':
-					'1':
-						'name': 'punctuation.definition.string.begin'
-				'end': '(")'
-				'endCaptures':
-					'1':
-						'name': 'punctuation.definition.string.end'
+				'begin': '"'
+				'end': '"'
 				'name': 'string.interpolated'
 				'contentName': 'entity'
 			}
@@ -135,8 +128,6 @@
 	'literals':
 		'patterns': [
 			{'include': '#primitives'}
-			{'include': '#lists'}
-			{'include': '#maps'}
 		]
 	'lists':
 		'patterns': [
@@ -181,37 +172,8 @@
 				]
 			}
 		]
-	'sections':
-		'patterns': [
-			{
-				'begin': '^\\b(provider|provisioner|resource|data|module|variable|output)\\b\\s*(?:("[\\w-]+"\\s*)*)?(\\{)'
-				'beginCaptures':
-					'1':
-						'name': 'entity.name.section'
-					'2':
-						'name': 'variable.parameter.function'
-					'3':
-						'name': 'punctuation.definition.tag.begin'
-				'end': '(\\})'
-				'endCaptures':
-					'1':
-						'name': 'punctuation.definition.tag.end'
-				'name': 'meta.section'
-				'patterns': [
-					{'include': '$base'}
-				]
-			}
-		]
 	'properties':
 		'patterns': [
-			{
-				'match': '\\b(count|depends_on|lifecycle|create_before_destroy|prevent_destroy|ignore_changes)\\b\\s*(=)\\s*'
-				'captures':
-					'1':
-						'name': 'variable'
-					'2':
-						'name': 'keyword.operator.assignment'
-			}
 			{
 				'match': '([\\w-]+)\\s*(=)\\s*(.+?)$'
 				'captures':
@@ -221,7 +183,7 @@
 						'name': 'keyword.operator.assignment'
 					'3':
 						'patterns': [
-							{'include': '#literals'}
+							{'include': '#primitives'}
 						]
 			}
 		]
