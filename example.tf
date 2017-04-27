@@ -7,7 +7,7 @@ provider "aws" {
 	access_key = "${var.prod_access_key}"
 	secret_key = "${var.prod_secret_key}"
 	number = 12kb
-	example = true
+	boolean = true
 	list = [true, false, 123, "$${var.foo.*} = ${var.foo.*}"]
 }
 
@@ -48,4 +48,26 @@ provider "aws" {
 	region = "us-east-1"
 	access_key = "${var.*.test_access_key}"
 	secret_key = "${var.test_secret_key}"
+}
+
+resource "aws_api_gateway_integration" "ActiveRunnerGetIntegration" {
+  rest_api_id             = "${aws_api_gateway_rest_api.CourierAPI.id}"
+  resource_id             = "${aws_api_gateway_resource.ActiveRunnerID.id}"
+  http_method             = "${aws_api_gateway_method.ActiveRunnerGet.http_method}"
+  credentials             = "${aws_iam_role.gateway_invoke_lambda.arn}"
+  integration_http_method = "POST"
+  type                    = "AWS"
+  uri                     = "arn:aws:apigateway:${var.aws_region}:lambda:path/2015-03-31/functions/${var.apex_function_get_active_runner}:current"
+  passthrough_behavior    = "WHEN_NO_TEMPLATES"
+
+  request_templates = {
+    "application/json" = "${file("request_templates/request_to_event")}"
+  }
+}
+
+resource "aws_api_gateway_integration_response" "ActiveRunnerGetIntegrationResponse" {
+  rest_api_id       = "${aws_api_gateway_rest_api.CourierAPI.id}"
+  resource_id       = "${aws_api_gateway_resource.ActiveRunnerID.id}"
+  http_method       = "${aws_api_gateway_method.ActiveRunnerGet.http_method}"
+  status_code       = "200"
 }

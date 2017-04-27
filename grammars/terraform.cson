@@ -215,5 +215,18 @@
 						'patterns': [
 							{'include': '#literals'}
 						]
+			},
+			{
+				'match': '(".+?")\\s*(=)\\s*(.+?)$'
+				'captures':
+					'1':
+						'name': 'variable'
+					'2':
+						'name': 'keyword.operator.assignment'
+					'3':
+						'patterns': [
+							{'include': '#literals'}
+						]
 			}
+
 		]
